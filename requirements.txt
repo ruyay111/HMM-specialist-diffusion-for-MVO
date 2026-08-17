@@ -1,0 +1,21 @@
+# Core scientific stack (evaluation notebooks + diffusion)
+numpy
+pandas
+matplotlib
+scipy
+scikit-learn
+cvxpy
+ecos
+
+# Diffusion training (UniTST_MP / run.py)
+torch
+einops
+tqdm
+joblib
+optuna
+geomloss
+
+# Optional: Notebook_Data_5 shock/crash helpers
+yfinance
+arch
+statsmodels

@@ -1,0 +1,24 @@
+{
+  "source_generated_csv": "/Users/mohanyang/Desktop/ruya/Diffusion-main/test_results/diffusion_denoised_x_UniTST_MP_ALL_Benchmark_KL2_N+Corr+FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_best_guess_optuna/450_discrete_DDPM_0.7473/generated_data.csv",
+  "benchmark_csv": "/Users/mohanyang/Desktop/ruya/Diffusion-main/data/benchmark_data.csv",
+  "assets": [
+    "A001",
+    "A004",
+    "A006",
+    "A008",
+    "A009",
+    "A011",
+    "A012",
+    "A013",
+    "A014",
+    "A015"
+  ],
+  "num_sequences": 20,
+  "num_windows": 500,
+  "window_len": 128,
+  "target_len": 2521,
+  "date_start": "2013-01-02",
+  "date_end": "2022-08-31",
+  "bootstrap_seed": 2026,
+  "method": "multivariate_window_bootstrap"
+}

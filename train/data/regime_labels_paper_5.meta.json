@@ -1,0 +1,42 @@
+{
+  "prices_csv": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/evaluation/data/benchmark/benchmark_data.csv",
+  "start_date": "2013-01-01",
+  "end_date": "2022-08-31",
+  "return_start": "2013-01-02",
+  "return_end": "2022-08-31",
+  "n_days": 2521,
+  "n_regimes": 5,
+  "vol_window": 20,
+  "min_segment": 32,
+  "random_state": 42,
+  "assets": [
+    "A001",
+    "A004",
+    "A006",
+    "A008",
+    "A009",
+    "A011",
+    "A012",
+    "A013",
+    "A014",
+    "A015"
+  ],
+  "market_mean": 0.00024475915463381464,
+  "market_std": 0.006009424464029401,
+  "regime_mean_volatility": [
+    0.663021111486869,
+    1.0977588117865524,
+    1.1888127128164514,
+    1.9032582943844014,
+    3.701670154491704
+  ],
+  "n_change_points": 16,
+  "regime_counts": {
+    "0": 1990,
+    "1": 389,
+    "2": 46,
+    "3": 44,
+    "4": 52
+  },
+  "note": "Offline labels on the evaluation sample. Rolling MVO still refits the HMM causally and does not reuse these labels at test time."
+}
