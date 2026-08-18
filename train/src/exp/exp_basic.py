@@ -32,29 +32,29 @@ class Exp_Basic(object):
             'GaussianDiffusion': DDPMSampler
         }
         self.loss_dict = {
-            'MSE_N': MSE_Loss(on='noise'),
-            'MSE_X': MSE_Loss(on='x'),
-            'L1_N': MAE_Loss(on='noise'),
-            'L1_X': MAE_Loss(on='x'),
-            'SmoothL1_N': Smooth_L1_Loss(on='noise'),
-            'SmoothL1_X': Smooth_L1_Loss(on='x'),
-            'KL_N': KL_Loss(on='noise'),  # softmax on channel dimension
-            'KL_X': KL_Loss(on='x'),  # softmax on time dimension
-            'KL2_N': KL_Loss_2(on='noise'),  # softmax on both channel and time dimension
-            'KL2_X': KL_Loss_2(on='x'),  # softmax on both channel and time dimension
-            'Wasserstein_N': Wasserstein_Loss(on='noise'),
-            'Wasserstein_X': Wasserstein_Loss(on='x'),
-            'Wasserstein2_N': Wasserstein_Loss_2(on='noise'),
-            'Wasserstein2_X': Wasserstein_Loss_2(on='x'),
-            'Sig': Signature_Loss(args),  # truncated signature
-            'SigKer': SigKer_MMD(args),  # non-truncated signature kernel
-            'AutoCorr': AutoCorr_Loss(args),
-            'AutoCorrFFT': AutoCorr_Loss_FFT(args),
-            'Corr': Corr_Loss(),
-            'FFT': FFT_Loss(),  # real loss + imag loss
-            'FFT2': FFT_Loss_2(),  # magnitude loss + phase loss
-            'DTS': DTS_loss(args),
-            'PlaceHolder': MSE_Loss(on='noise'),
+            'MSE_N': lambda: MSE_Loss(on='noise'),
+            'MSE_X': lambda: MSE_Loss(on='x'),
+            'L1_N': lambda: MAE_Loss(on='noise'),
+            'L1_X': lambda: MAE_Loss(on='x'),
+            'SmoothL1_N': lambda: Smooth_L1_Loss(on='noise'),
+            'SmoothL1_X': lambda: Smooth_L1_Loss(on='x'),
+            'KL_N': lambda: KL_Loss(on='noise'),  # softmax on channel dimension
+            'KL_X': lambda: KL_Loss(on='x'),  # softmax on time dimension
+            'KL2_N': lambda: KL_Loss_2(on='noise'),  # softmax on both channel and time dimension
+            'KL2_X': lambda: KL_Loss_2(on='x'),  # softmax on both channel and time dimension
+            'Wasserstein_N': lambda: Wasserstein_Loss(on='noise'),
+            'Wasserstein_X': lambda: Wasserstein_Loss(on='x'),
+            'Wasserstein2_N': lambda: Wasserstein_Loss_2(on='noise'),
+            'Wasserstein2_X': lambda: Wasserstein_Loss_2(on='x'),
+            'Sig': lambda: Signature_Loss(args),  # truncated signature
+            'SigKer': lambda: SigKer_MMD(args),  # non-truncated signature kernel
+            'AutoCorr': lambda: AutoCorr_Loss(args),
+            'AutoCorrFFT': lambda: AutoCorr_Loss_FFT(args),
+            'Corr': lambda: Corr_Loss(),
+            'FFT': lambda: FFT_Loss(),  # real loss + imag loss
+            'FFT2': lambda: FFT_Loss_2(),  # magnitude loss + phase loss
+            'DTS': lambda: DTS_loss(args),
+            'PlaceHolder': lambda: MSE_Loss(on='noise'),
         }
         self.device = self._acquire_device()
         if args.individual:
@@ -120,7 +120,7 @@ class Exp_Basic(object):
                 weight = 1.0
             if loss not in self.loss_dict:
                 raise ValueError('Loss function {} not supported'.format(loss))
-            self.loss_list.append(self.loss_dict[loss])
+            self.loss_list.append(self.loss_dict[loss]())
             self.weight_list.append(weight)
 
     def _configs_check(self):

@@ -3,8 +3,6 @@ import torch
 from torch import nn, optim
 import torch.nn.functional as F
 from einops import reduce
-import signatory
-import sigkernel
 import geomloss
 import numpy as np
 from src.sampler.DiffusionTSSampler import DiffusionTS
@@ -139,6 +137,13 @@ class Wasserstein_Loss_2(nn.Module):
 class Signature_Loss(nn.Module):
     def __init__(self, args):
         super(Signature_Loss, self).__init__()
+        try:
+            import signatory
+        except ImportError as exc:
+            raise ImportError(
+                "signatory is required for Signature_Loss; "
+                "it is not needed for KL2+Corr+FFT training."
+            ) from exc
         self.name = f'Signature_{args.sig_loss}'
         self.sig_depth = args.sig_depth
         self.sig_loss = args.sig_loss
@@ -192,6 +197,13 @@ class Signature_Loss(nn.Module):
 class SigKer_MMD(nn.Module):
     def __init__(self, args):
         super(SigKer_MMD, self).__init__()
+        try:
+            import sigkernel
+        except ImportError as exc:
+            raise ImportError(
+                "sigkernel is required for SigKer_MMD; "
+                "it is not needed for KL2+Corr+FFT training."
+            ) from exc
         self.name = 'SigKer_MMD'
         self.kernel_type = args.kernel_type
         self.sigma = args.sigma

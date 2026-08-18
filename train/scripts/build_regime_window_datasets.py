@@ -2,8 +2,11 @@
 """Phase 2: extract contiguous per-regime windows for specialist training.
 
 Input log returns: train/data/benchmark_data_log_ret_10.csv
-Input labels: train/data/regime_labels_paper_5.csv
+Input labels: train/data/regime_labels_5.csv
 Output: train/data/regime_windows/regime_{k}.npy of shape (N_k, seq_len, 10)
+
+Windows are the date intersection of log returns and labels. With default
+labels this is the full 2001-01-01 to 2022-08-31 specialist sample.
 """
 
 from __future__ import annotations
@@ -38,7 +41,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--labels-csv",
-        default=str(REPO_ROOT / "train" / "data" / "regime_labels_paper_5.csv"),
+        default=str(REPO_ROOT / "train" / "data" / "regime_labels_5.csv"),
     )
     parser.add_argument("--seq-len", type=int, default=128)
     parser.add_argument("--stride", type=int, default=1)
@@ -112,11 +115,18 @@ def main() -> int:
     if missing:
         raise ValueError(f"Missing return columns: {missing}")
 
+    n_returns_raw = int(len(returns))
+    n_labels_raw = int(len(labels))
     common = returns.index.intersection(labels.index)
     returns = returns.loc[common, ASSET_COLS]
     labels = labels.loc[common, "regime"].astype(int)
     if len(returns) == 0:
         raise ValueError("No overlapping dates between returns and labels.")
+    print(
+        f"[INFO] aligned {returns.index[0].date()} -> {returns.index[-1].date()} "
+        f"n={len(returns)} (dropped {n_returns_raw - len(common)} return rows, "
+        f"{n_labels_raw - len(common)} label rows without overlap)"
+    )
 
     seq_len = int(args.seq_len)
     stride = int(args.stride)

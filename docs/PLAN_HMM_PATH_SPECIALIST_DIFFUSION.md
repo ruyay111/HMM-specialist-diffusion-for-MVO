@@ -8,7 +8,7 @@ Replace calendar date-matched synthetic augmentation with regime-conditional syn
 |------|--------|
 | Location | `/Users/mohanyang/Desktop/ruya/Synthetic-data-tests` |
 | Architecture | Specialists: one unconditional UniTST_MP per regime |
-| Regimes | Paper 5 regimes via `identify_regimes_paper` |
+| Regimes | 5-regime labels via `identify_regimes` |
 | Generation | Full HMM regime path (not dominant-regime only) |
 | Diffusion window | `seq_len = 128` |
 | Synth storage | Offline per-regime pools |
@@ -31,9 +31,9 @@ HMMGAN
   → sample regime path r_1..T → x_t = G_{r_t}(noise)
 
 THIS PLAN
-  label regimes (paper) → train Diffusion_k on regime-k windows
+  label regimes → train Diffusion_k on regime-k windows
   → offline pool_k of 128×10 paths
-  → at rebalance: sample path r_1..H from paper HMM (causal filtered start)
+  → at rebalance: sample path r_1..H from the HMM (causal filtered start)
   → stitch synth path from pool_{r_t}
   → MVO on real regime-k* days + stitched synth (no dates)
 ```
@@ -52,7 +52,7 @@ Synthetic-data-tests/
 │   ├── data/
 │   │   ├── benchmark_data_log_ret_10.csv
 │   │   ├── benchmark_data.csv
-│   │   ├── regime_labels_paper_5.csv            # NEW
+│   │   ├── regime_labels_5.csv            # NEW
 │   │   └── regime_windows/                      # NEW
 │   │       ├── regime_0.npy
 │   │       ├── ...
@@ -60,7 +60,7 @@ Synthetic-data-tests/
 │   │       └── manifest.json
 │   ├── scripts/
 │   │   ├── convert_diffusion_generated_to_data5.py
-│   │   ├── build_paper_regime_labels.py         # NEW
+│   │   ├── build_regime_labels.py         # NEW
 │   │   ├── build_regime_window_datasets.py      # NEW
 │   │   ├── train_specialist_diffusions.sh       # NEW
 │   │   └── generate_specialist_pools.py         # NEW
@@ -73,7 +73,7 @@ Synthetic-data-tests/
 ├── evaluation/
 │   ├── Notebook_Regime_HMM_MVO.ipynb
 │   ├── Notebook_Data_5.ipynb
-│   ├── paper_hmm.py
+│   ├── supervised_hmm.py
 │   ├── regime_hmm_mvo.py                        # extend
 │   ├── synth_path_builder.py                    # NEW
 │   ├── data_utils.py
@@ -96,27 +96,27 @@ Already present under `Synthetic-data-tests/train/`:
 
 Already present under `evaluation/`:
 
-- `paper_hmm.py` (`identify_regimes_paper`, `fit_paper_supervised_hmm`, …)
+- `supervised_hmm.py` (`identify_regimes`, `fit_supervised_hmm`, …)
 - `regime_hmm_mvo.py` (causal regime MVO runner)
 - portfolio helpers
 
-## Phase 1 — Build paper regime labels
+## Phase 1 — Build regime labels
 
-**Script:** `train/scripts/build_paper_regime_labels.py`
+**Script:** `train/scripts/build_regime_labels.py`
 
-**Reuse:** `evaluation/paper_hmm.py` → `identify_regimes_paper`
+**Reuse:** `evaluation/supervised_hmm.py` → `identify_regimes`
 
 **Steps:**
 
 1. Load prices from `train/data/benchmark_data.csv` (or `evaluation/data/benchmark/benchmark_data.csv`).
-2. Restrict to the notebook asset set and date range used in evaluation (2013-01-01 → 2022-08-31).
+2. Restrict to the notebook asset set and the calendar UniTST_MP sample (**2001-01-01 → 2022-08-31**). Evaluation MVO still uses 2013–2022.
 3. Compute pct returns and equal-weight market return (same signal as regime MVO).
-4. Standardize the market series; run `identify_regimes_paper` with:
+4. Standardize the market series; run `identify_regimes` with:
    - `n_regimes=5`
    - `volatility_window=20`
    - `min_segment_length=32`
 5. Save:
-   - `train/data/regime_labels_paper_5.csv` with columns `date,regime`
+   - `train/data/regime_labels_5.csv` with columns `date,regime`
    - `train/data/regime_vol_centers.npy`
    - optional diagnostics plot / print of counts and mean vol by regime
 
@@ -129,11 +129,11 @@ Already present under `evaluation/`:
 **Inputs:**
 
 - `train/data/benchmark_data_log_ret_10.csv` (10-asset log returns, diffusion scale)
-- `train/data/regime_labels_paper_5.csv`
+- `train/data/regime_labels_5.csv`
 
 **Window rule:**
 
-1. Align dates between log-return panel and regime labels.
+1. Align dates between log-return panel and regime labels (full specialist sample, default 2001-01-01 → 2022-08-31).
 2. Extract contiguous segments where `regime == k`.
 3. Inside each segment of length `L`:
    - if `L >= 128`: extract sliding windows of length 128 (stride 1 or 5)
@@ -218,11 +218,11 @@ Pools are regime-keyed bags of windows. No calendar index.
 
 **New module:** `evaluation/synth_path_builder.py`
 
-**Reuse:** `paper_hmm.fit_paper_supervised_hmm`, filtered-state APIs already used by `forecast_occupancy`.
+**Reuse:** `supervised_hmm.fit_supervised_hmm`, filtered-state APIs already used by `forecast_occupancy`.
 
 At each MVO rebalance date `t` (history only):
 
-1. Fit paper regimes on standardized history (existing `regime_hmm_mvo` logic).
+1. Fit regimes on standardized history (existing `regime_hmm_mvo` logic).
 2. Fit supervised Gaussian HMM on `(history_returns, regime_labels)`.
 3. Obtain causal filtered state `alpha` at the last history day.
 4. Sample a regime path of length `H = 128`:
@@ -326,9 +326,9 @@ The last section of `Notebook_Regime_HMM_MVO.ipynb` loads specialist pools when 
 
 | Reuse | New |
 |------|-----|
-| `run.py`, `diffusion_denoised_x`, `UniTST_MP` | `build_paper_regime_labels.py` |
+| `run.py`, `diffusion_denoised_x`, `UniTST_MP` | `build_regime_labels.py` |
 | `Exp_Basic_Diffusion.generate_data` | `Dataset_RegimeWindows` + factory registration |
-| `paper_hmm.identify_regimes_paper` / supervised HMM | `build_regime_window_datasets.py` |
+| `supervised_hmm.identify_regimes` / supervised HMM | `build_regime_window_datasets.py` |
 | Ledoit–Wolf MVO, `collapse_weights` | `generate_specialist_pools.py` |
 | Notebook structure, seeds, mix grid | `synth_path_builder.py` |
 | | `mix_train_with_regime_paths` |
@@ -343,7 +343,7 @@ The last section of `Notebook_Regime_HMM_MVO.ipynb` loads specialist pools when 
 ## Implementation order
 
 1. Write this plan (done).
-2. Phase 1: paper regime label CSV.
+2. Phase 1: regime label CSV.
 3. Phase 2: regime window `.npy` datasets + manifest.
 4. Phase 3: `Dataset_RegimeWindows` + train specialists.
 5. Phase 4: offline pools.

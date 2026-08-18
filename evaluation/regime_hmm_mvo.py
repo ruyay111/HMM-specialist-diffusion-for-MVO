@@ -1,6 +1,6 @@
-"""Regime MVO using the paper-aligned supervised HMM.
+"""Regime MVO using the supervised HMM.
 
-Regime detection and supervised Gaussian HMM logic come from ``paper_hmm.py``.
+Regime detection and supervised Gaussian HMM logic come from ``supervised_hmm.py``.
 This module handles portfolio selection, synthetic augmentation, and rolling
 evaluation.
 
@@ -20,10 +20,10 @@ import numpy as np
 import pandas as pd
 from sklearn.covariance import LedoitWolf
 
-from paper_hmm import (
+from supervised_hmm import (
     assign_regimes_by_centers,
-    fit_paper_supervised_hmm,
-    identify_regimes_paper,
+    fit_supervised_hmm,
+    identify_regimes,
 )
 from portfolio_core import (
     calmar_ratio,
@@ -299,7 +299,7 @@ def fit_regime_context(
     market_history = market.iloc[: int(history_end)]
     standardized_history, _, _ = standardize_history(market_history)
 
-    regime_labels_array, regime_diagnostics = identify_regimes_paper(
+    regime_labels_array, regime_diagnostics = identify_regimes(
         standardized_history.to_numpy(),
         n_regimes=n_regimes,
         volatility_window=volatility_window,
@@ -312,7 +312,7 @@ def fit_regime_context(
         name="regime",
         dtype=int,
     )
-    hmm_model = fit_paper_supervised_hmm(
+    hmm_model = fit_supervised_hmm(
         standardized_history.to_numpy(),
         regime_labels_array,
         n_regimes=n_regimes,
@@ -383,7 +383,7 @@ def run_regime_mvo_experiment(
             "standardized_market_return"
         )
 
-        regime_labels_array, regime_diagnostics = identify_regimes_paper(
+        regime_labels_array, regime_diagnostics = identify_regimes(
             standardized_history.to_numpy(),
             n_regimes=n_regimes,
             volatility_window=volatility_window,
@@ -396,7 +396,7 @@ def run_regime_mvo_experiment(
             name="regime",
             dtype=int,
         )
-        hmm_model = fit_paper_supervised_hmm(
+        hmm_model = fit_supervised_hmm(
             standardized_history.to_numpy(),
             regime_labels_array,
             n_regimes=n_regimes,

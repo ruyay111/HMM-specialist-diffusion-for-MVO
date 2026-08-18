@@ -1,6 +1,6 @@
 {
-  "returns_csv": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/benchmark_data_log_ret_10.csv",
-  "labels_csv": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_labels_paper_5.csv",
+  "returns_csv": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\benchmark_data_log_ret_10.csv",
+  "labels_csv": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_labels_5.csv",
   "seq_len": 128,
   "stride": 1,
   "short_policy": "tile",
@@ -18,39 +18,39 @@
     "A014",
     "A015"
   ],
-  "aligned_start": "2013-01-02",
+  "aligned_start": "2001-01-02",
   "aligned_end": "2022-08-31",
-  "n_aligned_days": 2521,
+  "n_aligned_days": 5652,
   "regimes": {
     "0": {
-      "n_windows": 1355,
-      "n_segments_kept": 5,
-      "n_segments_skipped_short": 0,
-      "path": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_windows/regime_0.npy"
-    },
-    "1": {
-      "n_windows": 262,
+      "n_windows": 4221,
       "n_segments_kept": 4,
       "n_segments_skipped_short": 0,
-      "path": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_windows/regime_1.npy"
+      "path": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_windows\\regime_0.npy"
+    },
+    "1": {
+      "n_windows": 160,
+      "n_segments_kept": 2,
+      "n_segments_skipped_short": 0,
+      "path": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_windows\\regime_1.npy"
     },
     "2": {
-      "n_windows": 46,
-      "n_segments_kept": 1,
+      "n_windows": 277,
+      "n_segments_kept": 4,
       "n_segments_skipped_short": 0,
-      "path": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_windows/regime_2.npy"
+      "path": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_windows\\regime_2.npy"
     },
     "3": {
-      "n_windows": 44,
+      "n_windows": 111,
       "n_segments_kept": 1,
       "n_segments_skipped_short": 0,
-      "path": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_windows/regime_3.npy"
+      "path": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_windows\\regime_3.npy"
     },
     "4": {
-      "n_windows": 52,
-      "n_segments_kept": 1,
+      "n_windows": 121,
+      "n_segments_kept": 2,
       "n_segments_skipped_short": 0,
-      "path": "/Users/mohanyang/Desktop/ruya/Synthetic-data-tests/train/data/regime_windows/regime_4.npy"
+      "path": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\data\\regime_windows\\regime_4.npy"
     }
   }
 }

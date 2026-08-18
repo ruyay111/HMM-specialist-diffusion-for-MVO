@@ -12,6 +12,18 @@ from src.utils.utils import dotdict
 sns.set_style('whitegrid')
 
 
+def _benchmark_assets(benchmark, n_assets):
+    """Asset columns only. Calendar CSVs have a leading date; regime windows do not."""
+    n_cols = benchmark.shape[1]
+    if n_cols == n_assets:
+        return benchmark
+    if n_cols == n_assets + 1:
+        return benchmark.iloc[:, 1:]
+    raise ValueError(
+        f'Benchmark has {n_cols} columns but generated data has {n_assets} assets'
+    )
+
+
 def plot_epoch_loss(epoch_loss, title=None, save_name=None, log_scale=False):
 
     epochs = range(1, len(epoch_loss) + 1)
@@ -50,7 +62,8 @@ def plot_gradnorm_weights(gradnorm_wrapper, save_name=None):
 
 
 def plot_generated_vs_benchmark_dist(benchmark, output, save_name=None, bins=100, joint_kl=False, configs=None):
-    col_labels = benchmark.columns[1:]
+    assets = _benchmark_assets(benchmark, output.shape[1])
+    col_labels = assets.columns
     main_name = save_name[:-4] if save_name is not None else None
 
     num_plots = len(col_labels)
@@ -60,16 +73,16 @@ def plot_generated_vs_benchmark_dist(benchmark, output, save_name=None, bins=100
     fig, axes = plt.subplots(num_rows, num_cols, figsize=(num_cols * 8, num_rows * 6))
     axes = axes.flatten()
 
-    m_kl_div = marginal_kl_divergence(output.values, benchmark.iloc[:, 1:].values, bins=bins)
+    m_kl_div = marginal_kl_divergence(output.values, assets.values, bins=bins)
     if joint_kl:
-        j_kl_div = joint_kl_divergence(configs, output.values, benchmark.iloc[:, 1:].values)
+        j_kl_div = joint_kl_divergence(configs, output.values, assets.values)
     else:
         j_kl_div = -1
 
     for i in range(num_plots):
         sns.histplot(output.iloc[:, i], bins=bins, color='red', label='Generated', kde=True, stat="density", alpha=0.5,
                      ax=axes[i])
-        sns.histplot(benchmark.iloc[:, i + 1], bins=bins, color='blue', label='Benchmark', kde=True, stat="density",
+        sns.histplot(assets.iloc[:, i], bins=bins, color='blue', label='Benchmark', kde=True, stat="density",
                      alpha=0.3, ax=axes[i])
 
         axes[i].set_title(f'Distribution of {col_labels[i]}')
@@ -92,11 +105,12 @@ def plot_generated_vs_benchmark_dist(benchmark, output, save_name=None, bins=100
 
 
 def plot_generated_vs_benchmark_moments(benchmark, output, save_name=None):
+    assets = _benchmark_assets(benchmark, output.shape[1])
     out_mean, out_std, out_s, out_kurt = get_moments(output)
-    benchmark_mean, benchmark_std, benchmark_s, benchmark_kurt = get_moments(benchmark.iloc[:, 1:].values)
+    benchmark_mean, benchmark_std, benchmark_s, benchmark_kurt = get_moments(assets.values)
 
     x = np.arange(len(out_mean))
-    x_labels = benchmark.columns[1:]
+    x_labels = assets.columns
 
     def format_mse(mse):
         return f'{mse:.2e}' if mse < 0.01 else f'{mse:.2f}'
@@ -148,7 +162,8 @@ def plot_generated_vs_benchmark_moments(benchmark, output, save_name=None):
 
 
 def plot_generated_vs_benchmark_autocorr(benchmark, output, save_name=None, absolute=True, lags=20):
-    col_labels = benchmark.columns[1:]
+    assets = _benchmark_assets(benchmark, output.shape[1])
+    col_labels = assets.columns
     main_name = save_name[:-4] if save_name is not None else None
     dtw_distances = []
 
@@ -161,7 +176,7 @@ def plot_generated_vs_benchmark_autocorr(benchmark, output, save_name=None, abso
 
     for i in range(num_plots):
         output_ts = abs(output.iloc[:, i]) if absolute else output.iloc[:, i]
-        benchmark_ts = abs(benchmark.iloc[:, i + 1]) if absolute else benchmark.iloc[:, i + 1]
+        benchmark_ts = abs(assets.iloc[:, i]) if absolute else assets.iloc[:, i]
 
         acf_output = acf(output_ts, nlags=lags)[1:]
         acf_output = np.nan_to_num(acf_output, nan=0.0)  # Replace NaNs with 0
@@ -202,8 +217,9 @@ def plot_generated_vs_benchmark_cov(benchmark, output, save_name=None):
     main_name = save_name[:-4] if save_name is not None else None
 
     output_cov = output.cov().values
-    benchmark_cov = benchmark.iloc[:, 1:].cov().values
-    col_labels = benchmark.columns[1:]
+    assets = _benchmark_assets(benchmark, output.shape[1])
+    benchmark_cov = assets.cov().values
+    col_labels = assets.columns
 
     cov_diff = output_cov - benchmark_cov
 
@@ -257,8 +273,9 @@ def plot_generated_vs_benchmark_corr(benchmark, output, save_name=None):
     main_name = save_name[:-4] if save_name is not None else None
 
     output_corr = output.corr().values
-    benchmark_corr = benchmark.iloc[:, 1:].corr().values
-    col_labels = benchmark.columns[1:]
+    assets = _benchmark_assets(benchmark, output.shape[1])
+    benchmark_corr = assets.corr().values
+    col_labels = assets.columns
 
     corr_diff = output_corr - benchmark_corr
 

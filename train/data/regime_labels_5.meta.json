@@ -1,0 +1,42 @@
+{
+  "prices_csv": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\evaluation\\data\\benchmark\\benchmark_data.csv",
+  "start_date": "2001-01-01",
+  "end_date": "2022-08-31",
+  "return_start": "2001-01-02",
+  "return_end": "2022-08-31",
+  "n_days": 5652,
+  "n_regimes": 5,
+  "vol_window": 20,
+  "min_segment": 32,
+  "random_state": 42,
+  "assets": [
+    "A001",
+    "A004",
+    "A006",
+    "A008",
+    "A009",
+    "A011",
+    "A012",
+    "A013",
+    "A014",
+    "A015"
+  ],
+  "market_mean": 0.0002966504627596025,
+  "market_std": 0.007008632995420098,
+  "regime_mean_volatility": [
+    0.6824284915129633,
+    1.1917643068962886,
+    1.379565108667015,
+    2.343272768890934,
+    3.394633994609919
+  ],
+  "n_change_points": 19,
+  "regime_counts": {
+    "0": 4729,
+    "1": 287,
+    "2": 404,
+    "3": 111,
+    "4": 121
+  },
+  "note": "Offline labels on the full specialist sample (default 2001-01-01 to 2022-08-31), matching calendar UniTST_MP. Rolling MVO still refits the HMM causally and does not reuse these labels at test time."
+}

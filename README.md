@@ -29,7 +29,7 @@ Synthetic-data-tests/
 │   ├── portfolio_eval_final.py
 │   ├── stress_test_final.py
 │   ├── regime_hmm_mvo.py
-│   ├── paper_hmm.py                # slim paper HMM (no torch GAN deps)
+│   ├── supervised_hmm.py                # supervised HMM (no torch GAN deps)
 │   └── data/benchmark/benchmark_data.csv
 └── results/
     └── 450_discrete_DDPM_0.7473/   # synth used by the notebooks
@@ -101,7 +101,7 @@ Then point the notebooks’ `TEST_RUN_DIR` at that results folder (already the d
 Open notebooks from `evaluation/` (kernel working directory should be `evaluation/`):
 
 - `Notebook_Data_5.ipynb` — synthetic-data portfolio stress / MVO experiments
-- `Notebook_Regime_HMM_MVO.ipynb` — paper-aligned HMM + regime MVO
+- `Notebook_Regime_HMM_MVO.ipynb` — supervised HMM + regime MVO
 
 They load:
 
@@ -117,11 +117,13 @@ The existing calendar UniTST_MP model (`best_guess_optuna`) was trained on
 **2001-01-01 → 2022-08-31**. Evaluation notebooks then reindex generated windows
 onto **2013-01-02 → 2022-08-31**.
 
-The specialist pipeline uses the evaluation window for labels and windows:
+The specialist pipeline labels and trains on the same calendar sample
+(`2001-01-01` → `2022-08-31`). Evaluation notebooks still restrict the
+MVO backtest to **2013-01-02 → 2022-08-31**.
 
 ```bash
-# Phase 1: paper 5-regime labels (2013-01-01 to 2022-08-31)
-python train/scripts/build_paper_regime_labels.py
+# Phase 1: 5-regime labels (2001-01-01 to 2022-08-31)
+python train/scripts/build_regime_labels.py
 
 # Phase 2: contiguous 128-day windows per regime
 python train/scripts/build_regime_window_datasets.py
