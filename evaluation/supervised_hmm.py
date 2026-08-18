@@ -84,7 +84,7 @@ def identify_regimes(
     changepoint_penalty: float | None = None,
     random_state: int = 42,
 ) -> tuple[np.ndarray, dict]:
-    """Five-regime ground truth from EWM volatility segmentation."""
+    """Five-regime ground truth from EWM volatility segmentation.
 
     This method computes EWM volatility, detects change points, and clusters the
     resulting contiguous segments with spectral clustering. Labels are remapped

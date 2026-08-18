@@ -1,0 +1,18 @@
+
+
+===== Log started on 2026-08-18 08:20:47 =====
+>>>>>>>start training : diffusion_denoised_x_UniTST_MP_ALL_RegimeWindows_1.0-KL2_N+1.0-Corr+1.0-FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_specialist_regime_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+DataLoader: 33768
+	iters: 50, epoch: 1 | loss: 2.4175303 | duration: 57.98
+	speed: 1.1942s/iter; left time: 62937.9324s
+	iters: 100, epoch: 1 | loss: 2.4053419 | duration: 5.54
+	speed: 0.1108s/iter; left time: 5834.6019s
+	iters: 150, epoch: 1 | loss: 2.4465430 | duration: 5.10
+	speed: 0.1021s/iter; left time: 5369.1758s
+	iters: 200, epoch: 1 | loss: 1.7116439 | duration: 5.28
+	speed: 0.1056s/iter; left time: 5551.5193s
+	iters: 250, epoch: 1 | loss: 1.7235030 | duration: 5.32
+	speed: 0.1064s/iter; left time: 5588.2085s
+	iters: 300, epoch: 1 | loss: 1.5223801 | duration: 5.18
+	speed: 0.1036s/iter; left time: 5433.8997s
+===== Log ended on 2026-08-18 08:22:18 =====
