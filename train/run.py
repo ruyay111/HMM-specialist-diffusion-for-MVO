@@ -155,6 +155,8 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default='auto', choices=['auto', 'cuda', 'mps', 'cpu'],
                         help='device backend: auto (cuda>mps>cpu), cuda, mps, or cpu')
     parser.add_argument('--compile', default=False, action='store_true', help='use pytorch compile')
+    parser.add_argument('--skip_train', default=False, action='store_true',
+                        help='load an existing checkpoint and run test only')
 
     args = parser.parse_args()
     if args.device == 'cpu':
@@ -184,7 +186,8 @@ if __name__ == '__main__':
         raise ValueError(f'Unsupported task name: {args.task_name}')
 
     exp = Exp(args)
-    exp.train()
+    if not args.skip_train:
+        exp.train()
     exp.test(size=500, method='discrete', temperature=0.7473231454237225, save_data=True,
              sample_step=[0.1, 0.2, 0.3, 0.4, 0.45, 0.5, 0.55, 0.6, 0.7, 0.8, 0.9, 1.0], joint_kl=False, lags=128)
     """exp.test(size=1024, method='discrete', temperature=1, save_data=True,

@@ -7,9 +7,13 @@ from statsmodels.tsa.stattools import acf
 from src.exp.exp_joint_kl_div import Exp_Joint_KL_Div
 from src.utils.metrcis import riemannian_distance
 from scipy.stats import entropy
-from src.utils.utils import dotdict
+from src.utils.utils import dotdict, extended_path
 
 sns.set_style('whitegrid')
+
+
+def _savefig(path, **kwargs):
+    plt.savefig(extended_path(path), **kwargs)
 
 
 def _benchmark_assets(benchmark, n_assets):
@@ -41,7 +45,7 @@ def plot_epoch_loss(epoch_loss, title=None, save_name=None, log_scale=False):
         plt.ylabel('Loss', fontsize=14)
     plt.title(title, fontsize=14)
     plt.tight_layout()
-    plt.savefig(save_name)
+    _savefig(save_name)
     plt.clf()
 
 
@@ -58,7 +62,7 @@ def plot_gradnorm_weights(gradnorm_wrapper, save_name=None):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig(save_name, dpi=300)
+    _savefig(save_name, dpi=300)
 
 
 def plot_generated_vs_benchmark_dist(benchmark, output, save_name=None, bins=100, joint_kl=False, configs=None):
@@ -96,7 +100,7 @@ def plot_generated_vs_benchmark_dist(benchmark, output, save_name=None, bins=100
     plt.tight_layout()
 
     if save_name is not None:
-        plt.savefig(main_name + '_plots.png', dpi=300)
+        _savefig(main_name + '_plots.png', dpi=300)
     else:
         plt.show()
     plt.clf()
@@ -153,7 +157,7 @@ def plot_generated_vs_benchmark_moments(benchmark, output, save_name=None):
     plt.suptitle('Generated vs Benchmark Moments')
     plt.tight_layout()
     if save_name is not None:
-        plt.savefig(save_name)
+        _savefig(save_name)
     else:
         plt.show()
     plt.clf()
@@ -205,7 +209,7 @@ def plot_generated_vs_benchmark_autocorr(benchmark, output, save_name=None, abso
     plt.tight_layout()
 
     if save_name is not None:
-        plt.savefig(main_name + '_plots.png', dpi=300)
+        _savefig(main_name + '_plots.png', dpi=300)
     else:
         plt.show()
     plt.clf()
@@ -253,7 +257,7 @@ def plot_generated_vs_benchmark_cov(benchmark, output, save_name=None):
     plt.tight_layout(rect=[0, 0, 0.9, 1])
 
     if save_name is not None:
-        plt.savefig(main_name + '_plots.png')
+        _savefig(main_name + '_plots.png')
     else:
         plt.show()
     plt.clf()
@@ -306,7 +310,7 @@ def plot_generated_vs_benchmark_corr(benchmark, output, save_name=None):
     plt.tight_layout(rect=[0, 0, 0.9, 1])
 
     if save_name is not None:
-        plt.savefig(main_name + '_plots.png')
+        _savefig(main_name + '_plots.png')
     else:
         plt.show()
     plt.clf()
@@ -350,7 +354,7 @@ def plot_results_dict(results_dict, save_name):
         fig.delaxes(axes[j])
 
     plt.tight_layout()
-    plt.savefig(save_name, dpi=300)
+    _savefig(save_name, dpi=300)
     plt.clf()
 
 

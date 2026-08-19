@@ -210,6 +210,31 @@ def build_config(user_params):
     return complete_config
 
 
+def extended_path(path):
+    """Absolute path, with the Windows ``\\\\?\\`` prefix so paths can exceed MAX_PATH."""
+    path = os.path.abspath(os.path.expanduser(path))
+    if os.name != 'nt':
+        return path
+    path = path.replace('/', '\\')
+    if path.startswith('\\\\?\\'):
+        return path
+    if path.startswith('\\\\'):
+        return '\\\\?\\UNC\\' + path[2:]
+    return '\\\\?\\' + path
+
+
+def ensure_dir(path):
+    """Create ``path`` and parents, including directories longer than MAX_PATH on Windows.
+
+    Returns a normal absolute path. Use ``extended_path`` at file-open time when the
+    full filename may exceed MAX_PATH; PyTorch cannot open ``\\\\?\\`` paths that
+    contain forward slashes.
+    """
+    path = os.path.abspath(path)
+    os.makedirs(extended_path(path), exist_ok=True)
+    return path
+
+
 def generate_setting(args):
     setting = '{}_{}_{}_{}_{}_sl{}'.format(
         args.task_name,

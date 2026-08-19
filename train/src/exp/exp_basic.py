@@ -2,7 +2,7 @@ from src.data_provider.data_factory import data_provider
 from src.models import UNet, iTransformer, SimpleMLP, PatchTST, UniTST, UniTST_NoFlatten, UniTST_Individual, UniTST_MultiPatch, FinDiff_MLP, LTR_Model_Attn
 from src.sampler.DDPMSampler import DDPMSampler
 from src.utils.losses import *
-from src.utils.utils import generate_setting, PrintLogger, resolve_device, empty_accelerator_cache
+from src.utils.utils import generate_setting, PrintLogger, resolve_device, empty_accelerator_cache, ensure_dir
 import os
 import pickle
 import sys
@@ -71,9 +71,7 @@ class Exp_Basic(object):
 
         # start_date and end_date should have form 'YYYY-MM-DD', e.g. '2000-01-01'
         self.setting = generate_setting(args)
-        self.checkpoints_path = os.path.join(self.args.checkpoints, self.setting)
-        if not os.path.exists(self.checkpoints_path):
-            os.makedirs(self.checkpoints_path)
+        self.checkpoints_path = ensure_dir(os.path.join(self.args.checkpoints, self.setting))
         self.logger = PrintLogger(os.path.join(self.checkpoints_path, 'log.txt'))
         sys.stdout = self.logger
 

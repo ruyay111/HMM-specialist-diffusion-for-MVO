@@ -51,11 +51,19 @@ for k in $(seq 0 $((N_REGIMES - 1))); do
   fi
   has_ckpt="$("${PYTHON}" -c "from pathlib import Path; npy=Path(r'''${data_path}'''); ckpts=list(Path('checkpoints').glob('*_specialist_regime_${k}/checkpoint.pth')); print(any(p.exists() and p.stat().st_mtime>=npy.stat().st_mtime for p in ckpts))")"
   has_ckpt="${has_ckpt//$'\r'/}"
-  if [[ "${has_ckpt}" == "True" ]]; then
-    echo "[SKIP] specialist_regime_${k} checkpoint is newer than ${data_path}"
+  has_csv="$("${PYTHON}" -c "from pathlib import Path; print(any(Path('test_results').glob('*_specialist_regime_${k}/**/generated_data.csv')))")"
+  has_csv="${has_csv//$'\r'/}"
+  extra_args=()
+  if [[ "${has_ckpt}" == "True" && "${has_csv}" == "True" ]]; then
+    echo "[SKIP] specialist_regime_${k} checkpoint and generated_data.csv already exist"
     continue
   fi
-  echo "[TRAIN] specialist_regime_${k} n_windows=${n_windows}"
+  if [[ "${has_ckpt}" == "True" ]]; then
+    echo "[TEST] specialist_regime_${k} checkpoint exists; generating test_results only"
+    extra_args+=(--skip_train)
+  else
+    echo "[TRAIN] specialist_regime_${k} n_windows=${n_windows}"
+  fi
   "${PYTHON}" run.py \
     --task_name diffusion_denoised_x \
     --model UniTST_MP \
@@ -76,5 +84,6 @@ for k in $(seq 0 $((N_REGIMES - 1))); do
     --use_gpu True \
     --gpu 0 \
     --device cuda \
-    --description "specialist_regime_${k}"
+    --description "specialist_regime_${k}" \
+    "${extra_args[@]}"
 done

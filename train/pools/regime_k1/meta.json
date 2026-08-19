@@ -1,0 +1,14 @@
+{
+  "regime": 1,
+  "n_pool": 256,
+  "seq_len": 128,
+  "n_assets": 10,
+  "sample_step": 450,
+  "temperature": 0.7473231454237225,
+  "method": "discrete",
+  "sampler": "DDPM",
+  "checkpoint_dir": "C:\\Users\\Xu Lab\\Desktop\\Mohan\\HMM-specialist-diffusion-for-MVO\\train\\checkpoints\\diffusion_denoised_x_UniTST_MP_ALL_RegimeWindows_1.0-KL2_N+1.0-Corr+1.0-FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_specialist_regime_1",
+  "generated_at": "2026-08-19T14:28:52.450075+00:00",
+  "units": "log_returns",
+  "date_matched": false
+}

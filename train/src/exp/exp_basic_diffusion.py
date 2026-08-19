@@ -22,6 +22,10 @@ class Exp_Basic_Diffusion(Exp_Basic):
     def __init__(self, args):
         super(Exp_Basic_Diffusion, self).__init__(args)
 
+    def _output_dir(self, *parts):
+        path = ensure_dir(os.path.join(self.args.test_results, self.setting, *parts))
+        return extended_path(path) + os.sep
+
     def train(self):
         sys.stdout = self.logger
         pickle.dump(self.args, open(os.path.join(self.checkpoints_path, 'args.pkl'), 'wb'))  # save args
@@ -35,7 +39,7 @@ class Exp_Basic_Diffusion(Exp_Basic):
 
     def train_i(self, col):
         sys.stdout = self.logger
-        best_model_path = self.checkpoints_path + '/' + f'checkpoint_model_{col}.pth'
+        best_model_path = os.path.join(self.checkpoints_path, f'checkpoint_model_{col}.pth')
 
         print(f'>>>>>>>start training model {col} : {self.setting}>>>>>>>>>>>>>>>>>>>>>>>>>>')
         train_data, train_loader = self._get_data(col)
@@ -111,17 +115,17 @@ class Exp_Basic_Diffusion(Exp_Basic):
         self.model_list[col].load_state_dict(torch.load(best_model_path))
         plot_epoch_loss(epoch_loss,
                         self.args.loss,
-                        self.checkpoints_path + f'/train_loss_model_{col}.png',
+                        os.path.join(self.checkpoints_path, f'train_loss_model_{col}.png'),
                         log_scale=True if self.args.grad_norm else False)
         if self.args.grad_norm:
-            plot_gradnorm_weights(criterion, self.checkpoints_path + f'/gradnorm_weights_{col}.png')
+            plot_gradnorm_weights(criterion, os.path.join(self.checkpoints_path, f'gradnorm_weights_{col}.png'))
         print(f'>>>>>>>end training model {col}: {generate_elapsed_time(time_start)}>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         return self.model_list[col]
 
     def train_m(self):
         sys.stdout = self.logger
-        best_model_path = self.checkpoints_path + '/' + 'checkpoint.pth'
+        best_model_path = os.path.join(self.checkpoints_path, 'checkpoint.pth')
 
         print(f'>>>>>>>start training : {self.setting}>>>>>>>>>>>>>>>>>>>>>>>>>>')
         train_data, train_loader = self._get_data()
@@ -197,10 +201,10 @@ class Exp_Basic_Diffusion(Exp_Basic):
         self.model.load_state_dict(torch.load(best_model_path))
         plot_epoch_loss(epoch_loss,
                         self.args.loss,
-                        self.checkpoints_path + '/train_loss.png',
+                        os.path.join(self.checkpoints_path, 'train_loss.png'),
                         log_scale=True if self.args.grad_norm else False)
         if self.args.grad_norm:
-            plot_gradnorm_weights(criterion, self.checkpoints_path + '/gradnorm_weights.png')
+            plot_gradnorm_weights(criterion, os.path.join(self.checkpoints_path, 'gradnorm_weights.png'))
         print(f'>>>>>>>end training : {generate_elapsed_time(time_start)}>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         return self.model
@@ -254,9 +258,7 @@ class Exp_Basic_Diffusion(Exp_Basic):
                     self.model_list[i].load_state_dict(
                         torch.load(os.path.join(self.checkpoints_path, f'checkpoint_model_{i}.pth')))
 
-        folder_path = self.args.test_results + self.setting + '/'
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+        folder_path = self._output_dir()
 
         if sample_step is None:
             step_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -285,13 +287,12 @@ class Exp_Basic_Diffusion(Exp_Basic):
 
         for step in sample_step_list:
             if sampler == 'DDPM':
-                folder_path = self.args.test_results + self.setting + '/' + f'{step}_{method}_{sampler}_{temperature:.4f}' + '/'
+                folder_path = self._output_dir(f'{step}_{method}_{sampler}_{temperature:.4f}')
             elif sampler == 'DDIM':
-                folder_path = self.args.test_results + self.setting + '/' + f'{step}_{method}_{sampler}_{n_steps}_{ddim_eta:.4f}_{temperature:.4f}' + '/'
+                folder_path = self._output_dir(
+                    f'{step}_{method}_{sampler}_{n_steps}_{ddim_eta:.4f}_{temperature:.4f}')
             else:
                 raise NotImplementedError(sampler)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
 
             output = pd.DataFrame()
             for i in range(self.args.enc_in):
@@ -344,19 +345,15 @@ class Exp_Basic_Diffusion(Exp_Basic):
             results_dict['Correlation_Riemannian'].append(r_dist_corr)
 
         results_df = pd.DataFrame(results_dict)
+        results_root = self._output_dir()
         if sampler == 'DDPM':
-            results_df.to_csv(self.args.test_results + self.setting + f'/results_{method}_{sampler}_{temperature}.csv',
-                              index=False)
-            plot_results_dict(results_dict,
-                              self.args.test_results + self.setting + f'/results_{method}_{sampler}_{temperature}.png')
+            stem = f'results_{method}_{sampler}_{temperature}'
         elif sampler == 'DDIM':
-            results_df.to_csv(
-                self.args.test_results + self.setting + f'/results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}.csv',
-                index=False)
-            plot_results_dict(results_dict,
-                              self.args.test_results + self.setting + f'/results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}.png')
+            stem = f'results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}'
         else:
             raise NotImplementedError(sampler)
+        results_df.to_csv(results_root + stem + '.csv', index=False)
+        plot_results_dict(results_dict, results_root + stem + '.png')
         print(f'>>>>>>>end testing - {method} : {generate_elapsed_time(start_time)}>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         return results_df
@@ -375,9 +372,7 @@ class Exp_Basic_Diffusion(Exp_Basic):
                 self.model.load_state_dict(process_model_dict(os.path.join(self.checkpoints_path, 'checkpoint.pth')))
             else:
                 self.model.load_state_dict(torch.load(os.path.join(self.checkpoints_path, 'checkpoint.pth')))
-        folder_path = self.args.test_results + self.setting + '/'
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
+        folder_path = self._output_dir()
 
         if sample_step is None:
             step_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -401,13 +396,12 @@ class Exp_Basic_Diffusion(Exp_Basic):
 
         for step in sample_step_list:
             if sampler == 'DDPM':
-                folder_path = self.args.test_results + self.setting + '/' + f'{step}_{method}_{sampler}_{temperature:.4f}' + '/'
+                folder_path = self._output_dir(f'{step}_{method}_{sampler}_{temperature:.4f}')
             elif sampler == 'DDIM':
-                folder_path = self.args.test_results + self.setting + '/' + f'{step}_{method}_{sampler}_{n_steps}_{ddim_eta:.4f}_{temperature:.4f}' + '/'
+                folder_path = self._output_dir(
+                    f'{step}_{method}_{sampler}_{n_steps}_{ddim_eta:.4f}_{temperature:.4f}')
             else:
                 raise NotImplementedError(sampler)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
             output = self.generate_data(size, step, train_data, self.model,
                                         sampler, n_steps, ddim_discretize, ddim_eta,
                                         method, overlap_ratio, temperature)
@@ -455,19 +449,15 @@ class Exp_Basic_Diffusion(Exp_Basic):
             results_dict['Correlation_Riemannian'].append(r_dist_corr)
 
         results_df = pd.DataFrame(results_dict)
+        results_root = self._output_dir()
         if sampler == 'DDPM':
-            results_df.to_csv(self.args.test_results + self.setting + f'/results_{method}_{sampler}_{temperature}.csv',
-                              index=False)
-            plot_results_dict(results_dict,
-                              self.args.test_results + self.setting + f'/results_{method}_{sampler}_{temperature}.png')
+            stem = f'results_{method}_{sampler}_{temperature}'
         elif sampler == 'DDIM':
-            results_df.to_csv(
-                self.args.test_results + self.setting + f'/results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}.csv',
-                index=False)
-            plot_results_dict(results_dict,
-                              self.args.test_results + self.setting + f'/results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}.png')
+            stem = f'results_{method}_{sampler}_{n_steps}_{ddim_eta}_{temperature}'
         else:
             raise NotImplementedError(sampler)
+        results_df.to_csv(results_root + stem + '.csv', index=False)
+        plot_results_dict(results_dict, results_root + stem + '.png')
         print(f'>>>>>>>end testing - {method} : {generate_elapsed_time(start_time)}>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
         return results_df

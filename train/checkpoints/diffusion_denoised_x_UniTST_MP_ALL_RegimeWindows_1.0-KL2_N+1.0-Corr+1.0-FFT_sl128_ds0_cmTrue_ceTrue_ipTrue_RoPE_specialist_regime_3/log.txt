@@ -1,0 +1,173 @@
+
+
+===== Log started on 2026-08-18 23:17:38 =====
+>>>>>>>start training : diffusion_denoised_x_UniTST_MP_ALL_RegimeWindows_1.0-KL2_N+1.0-Corr+1.0-FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_specialist_regime_3>>>>>>>>>>>>>>>>>>>>>>>>>>
+DataLoader: 888
+Epoch: 1 cost time: 50.44
+Epoch: 1, Steps: 27 | Train Loss: 6.2626822
+Updating learning rate to 0.0027983303288563873
+Epoch: 2 cost time: 50.23
+Epoch: 2, Steps: 27 | Train Loss: 3.2474335
+Updating learning rate to 0.0027983303288563873
+Epoch: 3 cost time: 49.88
+Epoch: 3, Steps: 27 | Train Loss: 2.4422716
+Updating learning rate to 0.0027983303288563873
+Epoch: 4 cost time: 49.96
+Epoch: 4, Steps: 27 | Train Loss: 2.2238991
+Updating learning rate to 0.0027983303288563873
+Epoch: 5 cost time: 53.30
+Epoch: 5, Steps: 27 | Train Loss: 2.0791338
+Updating learning rate to 0.0027983303288563873
+Epoch: 6 cost time: 53.52
+Epoch: 6, Steps: 27 | Train Loss: 2.0102310
+Updating learning rate to 0.0027983303288563873
+Epoch: 7 cost time: 50.50
+Epoch: 7, Steps: 27 | Train Loss: 1.8847349
+Updating learning rate to 0.0027983303288563873
+Epoch: 8 cost time: 50.12
+Epoch: 8, Steps: 27 | Train Loss: 1.8250298
+Updating learning rate to 0.0027983303288563873
+Epoch: 9 cost time: 50.18
+Epoch: 9, Steps: 27 | Train Loss: 1.6333240
+Updating learning rate to 0.0027983303288563873
+Epoch: 10 cost time: 50.07
+Epoch: 10, Steps: 27 | Train Loss: 1.7333875
+Updating learning rate to 0.0027983303288563873
+Epoch: 11 cost time: 50.43
+Epoch: 11, Steps: 27 | Train Loss: 1.7087292
+Updating learning rate to 0.0013991651644281937
+Epoch: 12 cost time: 49.97
+Epoch: 12, Steps: 27 | Train Loss: 1.6064393
+Updating learning rate to 0.0013991651644281937
+Epoch: 13 cost time: 49.83
+Epoch: 13, Steps: 27 | Train Loss: 1.4853471
+Updating learning rate to 0.0013991651644281937
+Epoch: 14 cost time: 50.28
+Epoch: 14, Steps: 27 | Train Loss: 1.5099153
+Updating learning rate to 0.0013991651644281937
+Epoch: 15 cost time: 50.04
+Epoch: 15, Steps: 27 | Train Loss: 1.3681066
+Updating learning rate to 0.0013991651644281937
+Epoch: 16 cost time: 50.06
+Epoch: 16, Steps: 27 | Train Loss: 1.3978787
+Updating learning rate to 0.0013991651644281937
+Epoch: 17 cost time: 50.97
+Epoch: 17, Steps: 27 | Train Loss: 1.3371890
+Updating learning rate to 0.0013991651644281937
+Epoch: 18 cost time: 54.18
+Epoch: 18, Steps: 27 | Train Loss: 1.3217314
+Updating learning rate to 0.0013991651644281937
+Epoch: 19 cost time: 55.24
+Epoch: 19, Steps: 27 | Train Loss: 1.3287548
+Updating learning rate to 0.0013991651644281937
+Epoch: 20 cost time: 54.79
+Epoch: 20, Steps: 27 | Train Loss: 1.2802953
+Updating learning rate to 0.0013991651644281937
+Epoch: 21 cost time: 54.92
+Epoch: 21, Steps: 27 | Train Loss: 1.2536463
+Updating learning rate to 0.0006995825822140968
+Epoch: 22 cost time: 54.61
+Epoch: 22, Steps: 27 | Train Loss: 1.2391300
+Updating learning rate to 0.0006995825822140968
+Epoch: 23 cost time: 54.87
+Epoch: 23, Steps: 27 | Train Loss: 1.1609261
+Updating learning rate to 0.0006995825822140968
+Epoch: 24 cost time: 54.54
+Epoch: 24, Steps: 27 | Train Loss: 1.1840515
+Updating learning rate to 0.0006995825822140968
+Epoch: 25 cost time: 54.90
+Epoch: 25, Steps: 27 | Train Loss: 1.1816058
+Updating learning rate to 0.0006995825822140968
+Epoch: 26 cost time: 54.75
+Epoch: 26, Steps: 27 | Train Loss: 1.1608738
+Updating learning rate to 0.0006995825822140968
+Epoch: 27 cost time: 54.56
+Epoch: 27, Steps: 27 | Train Loss: 1.1174957
+Updating learning rate to 0.0006995825822140968
+Epoch: 28 cost time: 54.43
+Epoch: 28, Steps: 27 | Train Loss: 1.2159270
+Updating learning rate to 0.0006995825822140968
+Epoch: 29 cost time: 54.60
+Epoch: 29, Steps: 27 | Train Loss: 1.1855759
+Updating learning rate to 0.0006995825822140968
+Epoch: 30 cost time: 55.89
+Epoch: 30, Steps: 27 | Train Loss: 1.1710499
+Updating learning rate to 0.0006995825822140968
+Epoch: 31 cost time: 62.83
+Epoch: 31, Steps: 27 | Train Loss: 1.1653262
+Updating learning rate to 0.0003497912911070484
+Epoch: 32 cost time: 54.80
+Epoch: 32, Steps: 27 | Train Loss: 1.1997441
+Updating learning rate to 0.0003497912911070484
+Epoch: 33 cost time: 54.52
+Epoch: 33, Steps: 27 | Train Loss: 1.2274866
+Updating learning rate to 0.0003497912911070484
+Epoch: 34 cost time: 54.46
+Epoch: 34, Steps: 27 | Train Loss: 1.0714698
+Updating learning rate to 0.0003497912911070484
+Epoch: 35 cost time: 54.49
+Epoch: 35, Steps: 27 | Train Loss: 1.2040167
+Updating learning rate to 0.0003497912911070484
+Epoch: 36 cost time: 54.86
+Epoch: 36, Steps: 27 | Train Loss: 1.0990034
+Updating learning rate to 0.0003497912911070484
+Epoch: 37 cost time: 54.91
+Epoch: 37, Steps: 27 | Train Loss: 1.1801338
+Updating learning rate to 0.0003497912911070484
+Epoch: 38 cost time: 54.59
+Epoch: 38, Steps: 27 | Train Loss: 1.1004535
+Updating learning rate to 0.0003497912911070484
+Epoch: 39 cost time: 54.65
+Epoch: 39, Steps: 27 | Train Loss: 1.1972570
+Updating learning rate to 0.0003497912911070484
+Epoch: 40 cost time: 54.75
+Epoch: 40, Steps: 27 | Train Loss: 1.0674789
+Updating learning rate to 0.0003497912911070484
+Epoch: 41 cost time: 54.71
+Epoch: 41, Steps: 27 | Train Loss: 1.1141073
+Updating learning rate to 0.0001748956455535242
+Epoch: 42 cost time: 54.58
+Epoch: 42, Steps: 27 | Train Loss: 1.0478124
+Updating learning rate to 0.0001748956455535242
+Epoch: 43 cost time: 54.53
+Epoch: 43, Steps: 27 | Train Loss: 1.1357514
+Updating learning rate to 0.0001748956455535242
+Epoch: 44 cost time: 54.70
+Epoch: 44, Steps: 27 | Train Loss: 1.1189222
+Updating learning rate to 0.0001748956455535242
+Epoch: 45 cost time: 54.49
+Epoch: 45, Steps: 27 | Train Loss: 1.0698778
+Updating learning rate to 0.0001748956455535242
+Epoch: 46 cost time: 54.44
+Epoch: 46, Steps: 27 | Train Loss: 1.1311839
+Updating learning rate to 0.0001748956455535242
+Epoch: 47 cost time: 54.87
+Epoch: 47, Steps: 27 | Train Loss: 1.1402454
+Updating learning rate to 0.0001748956455535242
+Epoch: 48 cost time: 54.49
+Epoch: 48, Steps: 27 | Train Loss: 1.1491428
+Updating learning rate to 0.0001748956455535242
+Epoch: 49 cost time: 54.68
+Epoch: 49, Steps: 27 | Train Loss: 1.1071204
+Updating learning rate to 0.0001748956455535242
+Epoch: 50 cost time: 54.68
+Epoch: 50, Steps: 27 | Train Loss: 1.0751453
+Updating learning rate to 0.0001748956455535242
+>>>>>>>end training : 44m 38s>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>start testing - discrete : diffusion_denoised_x_UniTST_MP_ALL_RegimeWindows_1.0-KL2_N+1.0-Corr+1.0-FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_specialist_regime_3<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+DataLoader: 888
+loading model
+>>>>>>>end testing - discrete : 26m 19s>>>>>>>>>>>>>>>>>>>>>>>>>>
+===== Log ended on 2026-08-19 00:28:36 =====
+
+
+===== Log started on 2026-08-19 07:29:54 =====
+DataLoader: 888
+[OK] C:\Users\Xu Lab\Desktop\Mohan\HMM-specialist-diffusion-for-MVO\train\pools\regime_k3\windows.npy shape=(256, 128, 10)
+[GEN] regime 4 from diffusion_denoised_x_UniTST_MP_ALL_RegimeWindows_1.0-KL2_N+1.0-Corr+1.0-FFT_sl128_ds0_cmTrue_ceTrue_ipTrue_RoPE_specialist_regime_4
+Args in experiment:
+Namespace(task_name='diffusion_denoised_x', description='specialist_regime_4', model='UniTST_MP', checkpoints='./checkpoints/', test_results='./test_results/', individual=False, data='RegimeWindows', data_path='./data/regime_windows/regime_4.npy', regime_path='./warehouse/processed/macro_regime_3.csv', seq_len=128, scale='quantile', num_workers=10, batch_size=32, sample_multiplier=8, start_date='None', end_date='None', diffuser='GaussianDiffusion', total_steps=1000, scheduler='linear', enc_in=10, d_model=128, n_heads=8, e_layers=2, d_ff=512, dropout=0.1, activation='gelu', patch_len=16, stride=16, dispatchers=0, causal_mask=True, channel_embed=True, ind_proj=True, attn_proj=False, RoPE=True, use_fft=True, dts_loss='L1', use_tdt=False, prob_uncond=0.2, guidance_strength=0.2, n_regimes=3, prev_len=128, cond_type='ridx', ss_model='UniTST', mask_rate=0.2, sig_depth=3, sig_loss='L1', sig_uni=False, sig_log=False, kernel_type='rbf', sigma=1.0, dyadic_order=1, seq_len_multiplier=2, train_epochs=50, learning_rate=0.0027983303288563873, lr_decay_rounds=10, loss='1.0-KL2_N+1.0-Corr+1.0-FFT', weight_decay=0.0, use_amp=False, resume_path=None, grad_norm=False, gn_alpha=0.5, gn_learning_rate=0.01, pcgrad=False, use_gpu=True, gpu=0, device='cuda', compile=False, skip_train=False)
+Use device: cuda:0
+DataLoader: 968
+[OK] C:\Users\Xu Lab\Desktop\Mohan\HMM-specialist-diffusion-for-MVO\train\pools\regime_k4\windows.npy shape=(256, 128, 10)
+===== Log ended on 2026-08-19 07:31:58 =====
